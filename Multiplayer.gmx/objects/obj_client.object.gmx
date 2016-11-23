@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>connect = client_connect("127.0.0.1",9000);
+            <string>connect = client_connect("192.168.0.109",9000);
 
 alarm[0] = UPDATE_SPEED;
 </string>
@@ -102,8 +102,6 @@ alarm[0] = UPDATE_SPEED;
     case network_type_data:
         client_handle_message(async_load[? "buffer"]);
     break;
-
-
 }
 </string>
           </argument>

@@ -1,7 +1,8 @@
 #define server_create
 ///Server Create
 
-var port = argument0,
+var 
+port = argument0,
 server = 0;
 
 server = network_create_server_raw(network_socket_tcp, port, 20);
@@ -26,19 +27,22 @@ var socket_id = argument0;
 l = instance_create(0, 0, obj_serverClient);
 l.socket_id = socket_id;
 l.client_id = client_id_counter++;
-show_debug_message(string(l.client_id));
-if(client_id_counter<=65000){
+show_debug_message("Client ID: "+string(l.client_id));
+
+show_debug_message("Counter ID: "+string(client_id_counter));
+if(client_id_counter>=65000){
     client_id_counter = 0;
 }
 
 clientmap[? string(socket_id)] = l;
 
 #define server_handle_message
-///server_handle_message(socket_id,buffer)
+///server_handle_message(socket_id,buffer);
+
 var 
 socket_id = argument0,
-buffer = argument1;
-client_ide_current= clientmap[? string(socket_id)].client_id;
+buffer = argument1,
+client_id_current= clientmap[? string(socket_id)].client_id;
 
 while(true){
     var
@@ -47,6 +51,8 @@ while(true){
     switch(message_id){
     
         case MESSAGE_MOVE:
+        
+            var
             xx = buffer_read(buffer,buffer_u16);        
             yy = buffer_read(buffer,buffer_u16);
             

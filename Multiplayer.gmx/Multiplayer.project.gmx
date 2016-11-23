@@ -28,7 +28,7 @@
     <room>rooms\room0</room>
   </rooms>
   <constants number="2">
-    <constant name="UPDATE_SPEED">3</constant>
+    <constant name="UPDATE_SPEED">1</constant>
     <constant name="MESSAGE_MOVE">1</constant>
   </constants>
   <help>

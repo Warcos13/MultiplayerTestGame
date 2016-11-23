@@ -19,6 +19,7 @@ show_debug_message("ClientConnected");
 
 #define client_disconnect
 ///cliend_disconnetc()
+
 ds_map_destroy(clientmap);
 network_destroy(socket);
 
@@ -35,11 +36,11 @@ while(true){
     switch(message_id){
     
         case MESSAGE_MOVE:
-            
             var
             client = buffer_read(buffer, buffer_u16);
             xx = buffer_read(buffer, buffer_u16);
             yy = buffer_read(buffer, buffer_u16);
+            
             // if recive message from this client before
             if(ds_map_exists(clientmap,string(client))){
                 var clientObject = clientmap[? string(client)];
@@ -68,8 +69,7 @@ while(true){
 ///client_send_movement()
 
 buffer_seek(send_buffer,buffer_seek_start,0);
-
 buffer_write(send_buffer,buffer_u8,MESSAGE_MOVE);
-buffer_write(send_buffer,buffer_u8,round(obj_player.x));
-buffer_write(send_buffer,buffer_u8,round(obj_player.y));
+buffer_write(send_buffer,buffer_u16,round(obj_player.x));
+buffer_write(send_buffer,buffer_u16,round(obj_player.y));
 network_send_raw(socket,send_buffer,buffer_tell(send_buffer));
