@@ -36,37 +36,79 @@ if(client_id_counter>=65000){
 
 clientmap[? string(socket_id)] = l;
 
+buffer_seek(send_buffer,buffer_seek_start,0);
+buffer_write(send_buffer,buffer_u8,MESSAGE_GETID);
+buffer_write(send_buffer,buffer_u16,l.client_id);
+network_send_raw(socket_id,send_buffer,buffer_tell(send_buffer));
+
 #define server_handle_message
 ///server_handle_message(socket_id,buffer);
 
 var 
 socket_id = argument0,
 buffer = argument1,
-client_id_current= clientmap[? string(socket_id)].client_id;
+clientObject = clientmap[? string(socket_id)],
+client_id_current= clientObject.client_id;
 
 while(true){
     var
     message_id = buffer_read(buffer,buffer_u8);
     
     switch(message_id){
-    
+
         case MESSAGE_MOVE:
         
             var
             xx = buffer_read(buffer,buffer_u16);        
             yy = buffer_read(buffer,buffer_u16);
+            dir = buffer_read(buffer,buffer_u16);
+            clientObject.x = xx;
+            clientObject.y = yy;
             
             buffer_seek(send_buffer,buffer_seek_start,0);
             buffer_write(send_buffer, buffer_u8,MESSAGE_MOVE);
             buffer_write(send_buffer, buffer_u16,client_id_current);
             buffer_write(send_buffer, buffer_u16,xx);
             buffer_write(send_buffer, buffer_u16,yy);
-            
+            buffer_write(send_buffer, buffer_u16,dir);
             with(obj_serverClient){
                 if(client_id != client_id_current){
                     network_send_raw(self.socket_id,other.send_buffer,buffer_tell(other.send_buffer));                
                 }
             }
+        
+        break;
+        case MESSAGE_JOIN:
+            username = buffer_read(buffer,buffer_string);
+            clientObject.name = username;
+            
+            buffer_seek(send_buffer,buffer_seek_start,0);
+            buffer_write(send_buffer, buffer_u8,MESSAGE_JOIN);
+            buffer_write(send_buffer,buffer_u16,client_id_current);
+            buffer_write(send_buffer, buffer_string,username);
+            //Sending thename to other clients
+            with(obj_serverClient){
+                if(client_id != client_id_current){
+                    network_send_raw(self.socket_id,other.send_buffer,buffer_tell(other.send_buffer));                
+                }
+            }
+            //Send the other clients name to the new client
+            with(obj_serverClient){
+                if(client_id != client_id_current){
+                      buffer_seek(other.send_buffer,buffer_seek_start,0);
+                      buffer_write(other.send_buffer, buffer_u8,MESSAGE_JOIN);
+                      buffer_write(other.send_buffer,buffer_u16,client_id);
+                      buffer_write(other.send_buffer, buffer_string,name);  
+                      network_send_raw(socket_id,other.send_buffer,buffer_tell(other.send_buffer));             
+                }
+            }
+        break;
+        case MESSAGE_SHOOT:
+            
+            var
+            shootdirection = buffer_read(buffer,buffer_u16);
+            
+            server_handle_shoot(shootdirection,clientObject);
         
         break;
     }
@@ -81,9 +123,110 @@ while(true){
 
 var socket_id = argument0;
 
+buffer_seek(send_buffer ,buffer_seek_start,0);
+buffer_write(send_buffer, buffer_u8, MESSAGE_LEAVE);
+
+buffer_write(send_buffer, buffer_u16, clientmap[? string(socket_id)].client_id);
+
+
+
+
 with(clientmap[? (string(socket_id))]){
-instance_destroy();
-    
+    instance_destroy();
 }
 
 ds_map_delete(clientmap,string(socket_id));
+
+
+with(obj_serverClient){
+    network_send_raw(self.socket_id,other.send_buffer,buffer_tell(other.send_buffer));    
+}
+
+#define server_handle_shoot
+///server_handle_shoot(shootdirection, clientObject)
+
+var
+shootdirection = argument0,
+tempObject = argument1,
+hit = false,
+obj = noone;
+
+var
+prx = tempObject.x,
+pry = tempObject.y,
+prog = 0,
+tox = prx,
+toy = pry;
+
+with(tempObject){
+    while(prog < SHOOT_RANGE){
+        tox = prx + lengthdir_x(10,shootdirection);
+        toy = pry + lengthdir_y(10,shootdirection);  
+        
+        obj = collision_line(prx,pry,tox,toy,all,false,true);
+        if(instance_exists(obj)){
+            //hit!
+
+            hit = true;
+            prog+=10;
+            break;       
+        }
+        
+        prx = tox;
+        pry = toy;
+        prog+=10;
+    }
+    
+    create_shoot_line(x, y, tox, toy);
+}
+
+if(hit){
+        
+        if(obj.client_id>=0){
+            buffer_seek(send_buffer, buffer_seek_start,0);
+            buffer_write(send_buffer,buffer_u8,MESSAGE_HIT);
+            buffer_write(send_buffer,buffer_u16,tempObject.client_id);
+            buffer_write(send_buffer,buffer_u16,obj.client_id);        
+            buffer_write(send_buffer,buffer_u16,shootdirection);
+            buffer_write(send_buffer,buffer_u16,prog);
+            obj.hp-=1;
+            buffer_write(send_buffer,buffer_u8,obj.hp);
+           
+       }else{
+            buffer_seek(send_buffer, buffer_seek_start,0);
+            buffer_write(send_buffer,buffer_u8,MESSAGE_HIT_WALL);
+            buffer_write(send_buffer,buffer_u16,tempObject.client_id);
+            buffer_write(send_buffer,buffer_u16,shootdirection);
+            buffer_write(send_buffer,buffer_u16,prog);            
+            buffer_write(send_buffer,buffer_u16,obj.x);
+            buffer_write(send_buffer,buffer_u16,obj.y);
+        }
+           
+        with(obj_serverClient){
+            network_send_raw(self.socket_id,other.send_buffer, buffer_tell(other.send_buffer));
+        }
+} else{
+
+    buffer_seek(send_buffer, buffer_seek_start,0);
+    buffer_write(send_buffer,buffer_u8,MESSAGE_MISS);
+    buffer_write(send_buffer,buffer_u16,tempObject.client_id);
+    buffer_write(send_buffer,buffer_u16,shootdirection);
+    buffer_write(send_buffer,buffer_u16,prog);
+    
+    with(obj_serverClient){
+        network_send_raw(self.socket_id,other.send_buffer, buffer_tell(other.send_buffer));
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

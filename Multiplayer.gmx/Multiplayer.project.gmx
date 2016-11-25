@@ -9,27 +9,43 @@
     <sprite>sprites\psr_client</sprite>
     <sprite>sprites\spr_player</sprite>
     <sprite>sprites\spr_button</sprite>
+    <sprite>sprites\spr_wall</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\server_create.gml</script>
     <script>scripts\client_connect.gml</script>
+    <script>scripts\create_shoot_line.gml</script>
   </scripts>
   <objects name="objects">
-    <object>objects\obj_server</object>
-    <object>objects\obj_serverClient</object>
-    <object>objects\obj_client</object>
-    <object>objects\obj_player</object>
-    <object>objects\obj_otherClient</object>
     <object>objects\obj_button</object>
+    <objects name="Server">
+      <object>objects\obj_server</object>
+      <object>objects\obj_serverClient</object>
+    </objects>
+    <objects name="Client">
+      <object>objects\obj_player</object>
+      <object>objects\obj_client</object>
+      <object>objects\obj_otherClient</object>
+    </objects>
+    <object>objects\obj_shootLine</object>
+    <object>objects\obj_wall</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
   </rooms>
-  <constants number="2">
+  <constants number="10">
     <constant name="UPDATE_SPEED">1</constant>
+    <constant name="SHOOT_RANGE">800</constant>
     <constant name="MESSAGE_MOVE">1</constant>
+    <constant name="MESSAGE_JOIN">2</constant>
+    <constant name="MESSAGE_LEAVE">3</constant>
+    <constant name="MESSAGE_GETID">4</constant>
+    <constant name="MESSAGE_SHOOT">5</constant>
+    <constant name="MESSAGE_HIT">6</constant>
+    <constant name="MESSAGE_MISS">7</constant>
+    <constant name="MESSAGE_HIT_WALL">8</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>
