@@ -84,6 +84,30 @@ while(true){
             }       
         break;
         
+        case MESSAGE_KILL:            
+            var 
+            clientshootid = buffer_read(buffer, buffer_u16),
+            clientshoot = client_get_object(clientshootid),
+            clientshotid = buffer_read(buffer, buffer_u16),
+            clientshot = client_get_object(clientshotid),
+            shootdirection = buffer_read(buffer, buffer_u16),
+            shootlength = buffer_read(buffer, buffer_u16);
+            hit_x = clamp(clientshoot.x + lengthdir_x(shootlength,shootdirection),clientshot.x,clientshot.x+16);
+            hit_y = clamp(clientshoot.y + lengthdir_y(shootlength,shootdirection),clientshot.y,clientshot.y+16);
+            create_shoot_line(clientshoot.x,clientshoot.y, hit_x, hit_y);
+            with(clientshot){
+                do{
+                    randomize();
+                    x = random(room_width);
+                    y = random(room_height); 
+                    with(clientshot){
+                        collision = place_meeting(x,y,obj_wall);
+                    }        
+                }
+                until clientshot.collision=0;     
+            }
+            clientshot.hp = buffer_read(buffer, buffer_u8);
+        break;
         case MESSAGE_HIT:            
             var    
             clientshootid = buffer_read(buffer, buffer_u16),

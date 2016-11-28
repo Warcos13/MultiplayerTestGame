@@ -58,8 +58,19 @@ else{
     with(obj_button) instance_destroy();
     
 show_debug_message("client");
-    instance_create(0,0,obj_client);
-    instance_create(100,100,obj_player);              
+    instance_create(0,0,obj_client);    
+    player = instance_create(0,0,obj_player);
+    do{
+        randomize();
+        player.x = random(room_width);
+        player.y = random(room_height); 
+        with(player){
+            collision = place_meeting(x,y,obj_wall);
+        }
+        
+    }
+    until player.collision=0;     
+    show_debug_message(string(player.x)+" "+string(player.y));      
 }
 </string>
           </argument>

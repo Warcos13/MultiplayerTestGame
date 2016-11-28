@@ -183,14 +183,27 @@ with(tempObject){
 if(hit){
         
         if(obj.client_id>=0){
-            buffer_seek(send_buffer, buffer_seek_start,0);
-            buffer_write(send_buffer,buffer_u8,MESSAGE_HIT);
-            buffer_write(send_buffer,buffer_u16,tempObject.client_id);
-            buffer_write(send_buffer,buffer_u16,obj.client_id);        
-            buffer_write(send_buffer,buffer_u16,shootdirection);
-            buffer_write(send_buffer,buffer_u16,prog);
+            
             obj.hp-=1;
-            buffer_write(send_buffer,buffer_u8,obj.hp);
+            if(obj.hp >0){
+                buffer_seek(send_buffer, buffer_seek_start,0);
+                buffer_write(send_buffer,buffer_u8,MESSAGE_HIT);
+                buffer_write(send_buffer,buffer_u16,tempObject.client_id);
+                buffer_write(send_buffer,buffer_u16,obj.client_id);        
+                buffer_write(send_buffer,buffer_u16,shootdirection);
+                buffer_write(send_buffer,buffer_u16,prog);
+                buffer_write(send_buffer,buffer_u8,obj.hp);
+            }else{
+                obj.hp = 20;
+                buffer_seek(send_buffer, buffer_seek_start,0);
+                buffer_write(send_buffer,buffer_u8,MESSAGE_KILL);
+                buffer_write(send_buffer,buffer_u16,tempObject.client_id);
+                buffer_write(send_buffer,buffer_u16,obj.client_id);        
+                buffer_write(send_buffer,buffer_u16,shootdirection);
+                buffer_write(send_buffer,buffer_u16,prog);
+                buffer_write(send_buffer,buffer_u8,obj.hp);
+            }
+            
            
        }else{
             buffer_seek(send_buffer, buffer_seek_start,0);
@@ -218,7 +231,6 @@ if(hit){
     }
 
 }
-
 
 
 
