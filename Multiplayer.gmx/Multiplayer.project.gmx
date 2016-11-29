@@ -17,6 +17,7 @@
     <script>scripts\server_create.gml</script>
     <script>scripts\client_connect.gml</script>
     <script>scripts\create_shoot_line.gml</script>
+    <script>scripts\changeWeapon.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_button</object>

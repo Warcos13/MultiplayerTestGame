@@ -55,6 +55,53 @@ get_string_async("Pelase enter a username","");
         </arguments>
       </action>
     </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///NoAutomaticWeaponDelay
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///automaticFireDelay
+obj_player.canFire = true;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="2" enumb="0">
       <action>
         <libid>1</libid>
@@ -72,14 +119,15 @@ get_string_async("Pelase enter a username","");
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>client_send_movement();
+            <string>///UpdateSpeed
+client_send_movement();
 alarm[0] = UPDATE_SPEED;
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="54">
+    <event eventtype="6" enumb="56">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -96,9 +144,46 @@ alarm[0] = UPDATE_SPEED;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var
-dir = round(point_direction(obj_player.x,obj_player.y,mouse_x,mouse_y));
-client_send_shoot(dir);
+            <string>if(connected){
+    if(!obj_player.automaticFire&amp;&amp;alarm[2]&lt;=0){
+        obj_player.canFire=true;
+    }
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="6" enumb="50">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if(connected){
+    var
+    dir = point_direction(obj_player.x,obj_player.y,mouse_x,mouse_y)+random_range(-obj_player.precision,obj_player.precision);
+    if(obj_player.canFire){
+        obj_player.canFire = false;
+        if(obj_player.automaticFire){
+            alarm[1]=obj_player.shoot_delay;
+        }   alarm[2]=obj_player.shoot_delay; 
+        client_send_shoot(dir,obj_player.weaponDamage);
+    }
+}
+
 </string>
           </argument>
         </arguments>
@@ -150,9 +235,9 @@ client_send_shoot(dir);
           <argument>
             <kind>1</kind>
             <string>if(!connected){
-    connected = true;
     client_connect("192.168.0.109",9000,async_load[? "result"]);
     alarm[0] = UPDATE_SPEED;
+    connected = true;
 }
 </string>
           </argument>

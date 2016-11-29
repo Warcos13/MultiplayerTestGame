@@ -27,6 +27,12 @@
             <kind>1</kind>
             <string>hp = 20;
 spd = 4;
+canFire = true;
+precision = 0;
+shoot_delay = 0;
+weaponDamage = 1;
+automaticFire = true;
+changeWeapon(1);
 </string>
           </argument>
         </arguments>

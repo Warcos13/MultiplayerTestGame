@@ -107,8 +107,9 @@ while(true){
             
             var
             shootdirection = buffer_read(buffer,buffer_u16);
+            damage = buffer_read(buffer,buffer_u8);
             
-            server_handle_shoot(shootdirection,clientObject);
+            server_handle_shoot(shootdirection,damage,clientObject);
         
         break;
     }
@@ -147,7 +148,8 @@ with(obj_serverClient){
 
 var
 shootdirection = argument0,
-tempObject = argument1,
+weaponDmg=argument1,
+tempObject = argument2,
 hit = false,
 obj = noone;
 
@@ -184,7 +186,7 @@ if(hit){
         
         if(obj.client_id>=0){
             
-            obj.hp-=1;
+            obj.hp-=weaponDmg;
             if(obj.hp >0){
                 buffer_seek(send_buffer, buffer_seek_start,0);
                 buffer_write(send_buffer,buffer_u8,MESSAGE_HIT);
@@ -231,8 +233,6 @@ if(hit){
     }
 
 }
-
-
 
 
 

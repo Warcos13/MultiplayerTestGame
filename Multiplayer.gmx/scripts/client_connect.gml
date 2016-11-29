@@ -181,13 +181,15 @@ if(ds_map_exists(clientmap,string(client_id))){
 }
 
 #define client_send_shoot
-///client_send_shoot(direnction)
+///client_send_shoot(direnction,dmg)
 
-var dir = argument0;
-
+var 
+dir = argument0,
+dmg = argument1;
 buffer_seek(send_buffer,buffer_seek_start,0);
 
 buffer_write(send_buffer, buffer_u8,MESSAGE_SHOOT);
 buffer_write(send_buffer, buffer_u16,dir);
+buffer_write(send_buffer, buffer_u8,dmg);
 
 network_send_raw(socket, send_buffer, buffer_tell(send_buffer));
