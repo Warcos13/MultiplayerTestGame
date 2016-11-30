@@ -3,18 +3,21 @@ var
 pres = 0;
 delay = 0;
 dmg = 0;
+maxRange = 0;
 useDelay = false;
 switch (argument0){
     case 0:
         pres = 1;
         delay = 5;
         dmg = 5;
+        maxRange = 500;
         useDelay = false;
     break;
     case 1:
         pres = 2;
         delay = 5;
-        dmg = 1;
+        dmg = 1;        
+        maxRange = 1000;
         useDelay = true;
     break;
 }
@@ -25,4 +28,5 @@ with(obj_player){
     shoot_delay = delay;   
     weaponDamage = dmg;
     automaticFire = useDelay;
+    weaponRange = maxRange;
 }

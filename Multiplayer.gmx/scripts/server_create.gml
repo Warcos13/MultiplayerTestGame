@@ -108,8 +108,8 @@ while(true){
             var
             shootdirection = buffer_read(buffer,buffer_u16);
             damage = buffer_read(buffer,buffer_u8);
-            
-            server_handle_shoot(shootdirection,damage,clientObject);
+            range = buffer_read(buffer,buffer_u16);
+            server_handle_shoot(shootdirection,damage,range,clientObject);
         
         break;
     }
@@ -144,12 +144,13 @@ with(obj_serverClient){
 }
 
 #define server_handle_shoot
-///server_handle_shoot(shootdirection, clientObject)
+///server_handle_shoot(shootdirection,shootRange, clientObject)
 
 var
 shootdirection = argument0,
 weaponDmg=argument1,
-tempObject = argument2,
+maxRange = argument2,
+tempObject = argument3,
 hit = false,
 obj = noone;
 
@@ -161,7 +162,7 @@ tox = prx,
 toy = pry;
 
 with(tempObject){
-    while(prog < SHOOT_RANGE){
+    while(prog < maxRange){
         tox = prx + lengthdir_x(10,shootdirection);
         toy = pry + lengthdir_y(10,shootdirection);  
         
@@ -233,7 +234,6 @@ if(hit){
     }
 
 }
-
 
 
 
