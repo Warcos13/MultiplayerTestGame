@@ -180,7 +180,7 @@ alarm[0] = UPDATE_SPEED;
         if(obj_player.automaticFire){
             alarm[1]=obj_player.shoot_delay;
         }   alarm[2]=obj_player.shoot_delay; 
-        client_send_shoot(dir,obj_player.weaponDamage);
+        client_send_shoot(dir,obj_player.weaponDamage,obj_player.weaponRange);
     }
 }
 
@@ -235,7 +235,7 @@ alarm[0] = UPDATE_SPEED;
           <argument>
             <kind>1</kind>
             <string>if(!connected){
-    client_connect("192.168.0.109",9000,async_load[? "result"]);
+    client_connect("127.0.0.1",9000,async_load[? "result"]);
     alarm[0] = UPDATE_SPEED;
     connected = true;
 }

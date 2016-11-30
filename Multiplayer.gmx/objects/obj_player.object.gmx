@@ -31,6 +31,7 @@ canFire = true;
 precision = 0;
 shoot_delay = 0;
 weaponDamage = 1;
+weaponRange = 500;
 automaticFire = true;
 changeWeapon(1);
 </string>
@@ -65,6 +66,12 @@ if(!place_meeting(x+hspd*spd,y,obj_wall)){
 }
 if(!place_meeting(x,y+vspd*spd,obj_wall)){
     y+=vspd*spd;
+}
+
+if(keyboard_check(vk_shift)){
+    spd = 6;
+}else{
+    spd = 4;
 }
 
 
