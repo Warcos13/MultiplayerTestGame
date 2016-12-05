@@ -11,7 +11,9 @@
     <sprite>sprites\spr_button</sprite>
     <sprite>sprites\spr_wall</sprite>
   </sprites>
-  <backgrounds name="background"/>
+  <backgrounds name="background">
+    <background>background\TestingTiled</background>
+  </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\server_create.gml</script>
@@ -35,6 +37,7 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
+    <room>rooms\room1</room>
   </rooms>
   <constants number="11">
     <constant name="UPDATE_SPEED">1</constant>
