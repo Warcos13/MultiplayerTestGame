@@ -167,7 +167,7 @@ with(tempObject){
         toy = pry + lengthdir_y(10,shootdirection);  
         
         obj = collision_line(prx,pry,tox,toy,all,false,true);
-        if(instance_exists(obj)){
+        if(instance_exists(obj) && obj.client_id != -1){
             //hit!
 
             hit = true;
@@ -179,7 +179,7 @@ with(tempObject){
         pry = toy;
         prog+=10;
     }
-    
+    show_debug_message("To: "+string(x)+" "+string(y)+" "+string(tox)+" "+string(toy)+" ");
     create_shoot_line(x, y, tox, toy);
 }
 
@@ -234,8 +234,6 @@ if(hit){
     }
 
 }
-
-
 
 
 

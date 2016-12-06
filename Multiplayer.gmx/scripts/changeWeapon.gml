@@ -7,17 +7,17 @@ maxRange = 0;
 useDelay = false;
 switch (argument0){
     case 0:
-        pres = 1;
-        delay = 5;
+        pres = 0;
+        delay = 3;
         dmg = 5;
         maxRange = 500;
         useDelay = false;
     break;
     case 1:
-        pres = 2;
+        pres = 1;
         delay = 5;
         dmg = 1;        
-        maxRange = 1000;
+        maxRange = 600;
         useDelay = true;
     break;
 }

@@ -10,6 +10,7 @@
     <sprite>sprites\spr_player</sprite>
     <sprite>sprites\spr_button</sprite>
     <sprite>sprites\spr_wall</sprite>
+    <sprite>sprites\sprite4_TestingRoof</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\TestingTiled</background>
@@ -20,6 +21,7 @@
     <script>scripts\client_connect.gml</script>
     <script>scripts\create_shoot_line.gml</script>
     <script>scripts\changeWeapon.gml</script>
+    <script>scripts\getRoof.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_button</object>
@@ -31,9 +33,11 @@
       <object>objects\obj_player</object>
       <object>objects\obj_client</object>
       <object>objects\obj_otherClient</object>
+      <object>objects\DoorTestEnter</object>
     </objects>
     <object>objects\obj_shootLine</object>
     <object>objects\obj_wall</object>
+    <object>objects\rooftest</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>

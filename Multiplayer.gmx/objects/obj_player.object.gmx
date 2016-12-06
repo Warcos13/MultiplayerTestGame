@@ -25,7 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>hp = 20;
+            <string>image_speed = 0.4;
+hp = 20;
 spd = 4;
 canFire = true;
 precision = 0;
@@ -33,7 +34,8 @@ shoot_delay = 0;
 weaponDamage = 1;
 weaponRange = 500;
 automaticFire = true;
-changeWeapon(1);
+isInside = false;
+changeWeapon(0);
 </string>
           </argument>
         </arguments>
@@ -75,7 +77,7 @@ if(keyboard_check(vk_shift)){
 }
 
 
-image_angle = round(point_direction(x,y,mouse_x,mouse_y));
+//image_angle = round(point_direction(x,y,mouse_x,mouse_y));
 </string>
           </argument>
         </arguments>
