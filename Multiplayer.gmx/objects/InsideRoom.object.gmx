@@ -52,17 +52,10 @@ isInside = false;
             <kind>1</kind>
             <string>
 if(place_meeting(x,y,obj_player)&amp;&amp; !obj_player.isInside &amp;&amp;!isInside){
-    isInside = true;
-    obj_player.isInside=true;
     roof.image_alpha = 0;
-}else if(place_meeting(x,y,obj_player)&amp;&amp; obj_player.isInside&amp;&amp;!isInside){
-    obj_player.isInside=false;
-    isInside = true;
-    roof.image_alpha = 1;
 }else{
-    isInside = false; 
+    roof.image_alpha = 1;
 }
-show_debug_message(string(obj_player.isInside)+ " "+isInside);
 </string>
           </argument>
         </arguments>

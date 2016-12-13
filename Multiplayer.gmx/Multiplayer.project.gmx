@@ -33,7 +33,7 @@
       <object>objects\obj_player</object>
       <object>objects\obj_client</object>
       <object>objects\obj_otherClient</object>
-      <object>objects\DoorTestEnter</object>
+      <object>objects\InsideRoom</object>
     </objects>
     <object>objects\obj_shootLine</object>
     <object>objects\obj_wall</object>
